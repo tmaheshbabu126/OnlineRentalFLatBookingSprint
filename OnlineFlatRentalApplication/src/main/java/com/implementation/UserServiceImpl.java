@@ -20,24 +20,24 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User viewUser(int id) throws UserNotFoundException {
-		return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+		return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found")); //finding user by id or throwing custom exception
 	}
 
 	@Override
 	public List<User> viewAllUser() {
-		return userRepository.findAll();
+		return userRepository.findAll(); //finding all users from database
 	}
 
 	@Override
 	public User validateUser(String username, String password) {
 
-		User user = userRepository.findByUserNameAndPassword(username, password);
+		User user = userRepository.findByUserNameAndPassword(username, password); //validating whether the user is present in database or not
 		return user;
 	}
 
 	@Override
 	public User addUser(User user) {
-		return userRepository.save(user);
+		return userRepository.save(user); //saving user in database
 	}
 
 	
@@ -48,26 +48,26 @@ public class UserServiceImpl implements IUserService {
 		
 		System.out.println(user.getUserName());
 		Supplier<Exception> s = () -> new UserNotFoundException("User not found");
-		User c1=userRepository.findById(uid).orElseThrow(s);
+		User c1=userRepository.findById(uid).orElseThrow(s);   //finding user by id or throwing custom exception
 		c1.setUserId(user.getUserId());
 		c1.setUserName(user.getUserName());
 		c1.setUserType(user.getUserType());
-		userRepository.save(c1);	
+		userRepository.save(c1);	//save in databse
 		return c1;
 	}
 
 	@Override
 	public User updatePassword(User user, String newpass) {
-		user = userRepository.findById(user.getUserId()).get();
-		user.setPassword(newpass);
-		return userRepository.save(user);
+		user = userRepository.findById(user.getUserId()).get(); //getting user id from database
+		user.setPassword(newpass); //updating password for user
+		return userRepository.save(user); //updating in database
 	}
 
 	@Override
 	public void removeUser(User user) throws Exception {
 		Supplier<Exception> s = () -> new UserNotFoundException("User Id is not present in the database");
-	    userRepository.findById(user.getUserId()).orElseThrow(s);
-		userRepository.delete(user);
+	    userRepository.findById(user.getUserId()).orElseThrow(s); //finding user by id or throwing custom exception
+		userRepository.delete(user); //deleting user from database
 	}
 
 }
